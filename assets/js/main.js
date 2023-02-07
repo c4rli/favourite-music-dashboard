@@ -646,3 +646,161 @@ $(document).ready(function () {
 
 showFavourites();
 showPlaylist();
+playlistList();
+
+function playlistList() {
+
+  var playlistRow = $('<div class="playlistRow row w-100 justify-content-between"></div>');
+
+  var playlistListContainer = $('<div>');
+
+  if (!localStorage.getItem("songData")) {
+    playlistListContainer.attr(
+      "class",
+      "playlistListContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+    );
+  } else {
+    playlistListContainer.attr(
+      "class",
+      "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+    );
+  };
+
+  var playlistListHeading = $('#playlistListHeading');
+  playlistListHeading.text('Most popular playlists');
+  playlistListHeading.show();
+
+  playlistRow.append(playlistListContainer);
+
+  const playlistsArray = ['915487765', '3155776842', '10361171462', '4503899902', '9039631242', '3660896922'];
+
+  var playlistIdArray = [];
+
+  for (let i = 0; i < playlistsArray.length; i++) {
+
+  var settings = {
+    async: true,
+    crossDomain: true,
+    url: "https://deezerdevs-deezer.p.rapidapi.com/playlist/" + playlistsArray[i],
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
+      "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+    },
+  };
+
+  $.ajax(settings).done(function (playlistListResponse) {
+    console.log(playlistListResponse);
+   
+
+    // $.each(playlistListResponse, function (index, value) {
+  
+      // var test = value.tracks.data.length;
+      // console.log(test);
+      playlistListObj = {
+        playlistTitle: playlistListResponse.title,
+        playlistImage: playlistListResponse.picture,
+        playlistTracksAmt: playlistListResponse.tracks.data.length,
+        playlistFans: playlistListResponse.fans
+      };
+
+      // playlistIdArray.push(playlistListObj);
+      // console.log(playlistIdArray);
+
+
+  // for (i = 0; i < playlistIdArray.length; i++) {
+
+    console.log(playlistIdArray[i]);
+
+    var playlistCard = $('<div>');
+    playlistCard.attr("class", "card result mt-4 w-100");
+    playlistListContainer.append(playlistCard);
+
+    //add image
+    var playlistImg = $('<img>');
+    playlistImg
+    .attr('class', 'card-img-top')
+    .attr('src', playlistListObj.playlistImage);
+    playlistCard.append(playlistImg);
+
+    // add card body div
+    var playlistCardBody = $("<div>");
+    playlistCardBody.attr("class", "d-flex card-body flex-column");
+    playlistCard.append(playlistCardBody);
+
+    //add song title heading
+    var playlistTitle = $("<h2>");
+    playlistTitle.attr("class", "card-title");
+    playlistTitle.attr(
+      "style",
+      "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
+    );
+    playlistTitle.text(playlistListObj.playlistTitle);
+    playlistCardBody.append(playlistTitle);
+
+
+    // add line
+    var playlistDivider = $("<hr>");
+    playlistDivider.attr("class", "hr");
+    playlistDivider.attr(
+      "style",
+      "margin: .5rem 0 !important; color: white;"
+    );
+    playlistCardBody.append(playlistDivider);
+
+    // add playlist info
+    var playlistInfo = $("<h3>");
+    playlistInfo.attr(
+      "style",
+      "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
+    );
+    playlistInfo.text("Tracks: " + playlistListObj.playlistTracksAmt + " | Fans: " + playlistListObj.playlistFans);
+    playlistCardBody.append(playlistInfo);
+
+    // add line
+    var playlistDivider = $("<hr>");
+    playlistDivider.attr("class", "hr");
+    playlistDivider.attr(
+      "style",
+      "margin: .5rem 0 !important; color: white;"
+    );
+    playlistCardBody.append(playlistDivider);
+
+    //add buttons div
+    var playlistButtonDiv = $("<div>");
+    playlistButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
+    playlistCardBody.append(playlistButtonDiv);
+
+    //add buttons to div
+    var playPlaylistButton = $("<button>");
+    playPlaylistButton.attr("class", "btn btn-primary flex-fill lyricsButton");
+    // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
+    playPlaylistButton.text("View Playlist");
+    playlistButtonDiv.append(playPlaylistButton);
+
+    
+
+    });
+
+    
+
+  }
+
+  
+
+$('#playlistContainer').append(playlistRow);
+}
+
+
+//NEW FEATURES
+
+//get playlists in array
+//3155776842 - Top Worldwide
+
+//make cards for each playlist
+//
+//click button for playlist >>
+//set variable for url
+//send ajax for targeted playlist
+//showPlaylist()
+//

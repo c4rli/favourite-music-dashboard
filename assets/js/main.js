@@ -1,22 +1,22 @@
 var resultsHeading = $("#resultsHeading");
 resultsHeading.hide();
 
-var playlistHeading = $('#playlistHeading');
+var playlistHeading = $("#playlistHeading");
 playlistHeading.hide();
 
 $("#clearFavourites").hide();
-$('#backButton').hide();
+$("#backButton").hide();
 
 //setting currentIndex for api url
 currentIndex = -12;
 
 function showLyricData() {
-
-  $('#backButton').show();
+  $("#backButton").show();
   $("#playlistContainer").empty();
 
-  let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
-  localStorage.setItem('search', JSON.stringify(artist));
+  let artist =
+    JSON.parse(localStorage.getItem("search")) || $("#search-input").val();
+  localStorage.setItem("search", JSON.stringify(artist));
 
   currentIndex += 12;
 
@@ -24,7 +24,12 @@ function showLyricData() {
   let settings = {
     async: true,
     crossDomain: true,
-    url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex + "&limit=12",
+    url:
+      "https://deezerdevs-deezer.p.rapidapi.com/search?q=" +
+      artist +
+      "&index=" +
+      currentIndex +
+      "&limit=12",
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
@@ -33,7 +38,6 @@ function showLyricData() {
   };
 
   $.ajax(settings).done(function (songResponse) {
-
     // Account for both submitting an empty string or writing an
     // unknown artist. Only writing an empty string (or ajax request limit problems etc)
     //creates a response error object, otherwise it just returns an response object with a total of 0
@@ -44,7 +48,6 @@ function showLyricData() {
       resultsHeading.hide();
       invalidSearch(artist, false);
     } else {
-
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
       resultsHeading.show();
@@ -55,7 +58,6 @@ function showLyricData() {
 
       // loop through the data for the first 12 responses
       $.each(songResults, function (index, value) {
-
         // get the title, artist, cover image and album for each song
         songsObj = {
           songTitle: value.title,
@@ -68,7 +70,6 @@ function showLyricData() {
       });
 
       var row = $('<div class="row w-100 justify-content-between"></div>');
-
 
       // loop through the stored song info and display in bootstrap cards
       for (let i = 0; i < 12 && i < songResultsArray.length; i++) {
@@ -178,40 +179,48 @@ function showLyricData() {
         songResultFavBtn.attr("class", "btn btn-primary flex-fill favsButton");
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
-
       }
 
-      if (!$('#loadMoreButton').length) {
-        var loadMoreButton = $('<button id="loadMoreButton">Load More</button>');
-        var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
+      if (!$("#loadMoreButton").length) {
+        var loadMoreButton = $(
+          '<button id="loadMoreButton">Load More</button>'
+        );
+        var loadMoreButtonDiv = $(
+          '<div class="d-flex justify-content-center align-items-center>"</div>'
+        );
         $(loadMoreButtonDiv).append(loadMoreButton);
-        $('#main').append(loadMoreButtonDiv);
-        $('#loadMoreButton').attr('class', 'btn btn-primary m-4');
+        $("#main").append(loadMoreButtonDiv);
+        $("#loadMoreButton").attr("class", "btn btn-primary m-4");
 
-        $('#loadMoreButton').on('click', function () {
-          $('html, body').animate({
-            scrollTop: $(window).scrollTop() + $(window).height() * 0.5
-          }, 'slow');
-          artist = localStorage.getItem('search');
+        $("#loadMoreButton").on("click", function () {
+          $("html, body").animate(
+            {
+              scrollTop: $(window).scrollTop() + $(window).height() * 0.5,
+            },
+            "slow"
+          );
+          artist = localStorage.getItem("search");
           showLyricData();
           currentIndex += 12;
-        })
+        });
       }
 
       $("#cardContainer").append(row);
-      $('#search-input').val('');
+      $("#search-input").val("");
     }
   });
 }
 
 function showPlaylist() {
-
   currentIndex += 12;
 
   const settings = {
     async: true,
     crossDomain: true,
-    url: "https://deezerdevs-deezer.p.rapidapi.com/playlist/915487765&index=" + currentIndex + "&limit=12",
+    url:
+      "https://deezerdevs-deezer.p.rapidapi.com/playlist/915487765&index=" +
+      currentIndex +
+      "&limit=12",
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
@@ -228,7 +237,6 @@ function showPlaylist() {
 
     // loop through the data for the first 12 responses
     $.each(playlistTracks, function (index, value) {
-
       // get the title, artist, cover image and album for each song
       playlistObj = {
         songTitle: value.title,
@@ -249,7 +257,6 @@ function showPlaylist() {
     playlistHeading.show();
 
     const columns = 12;
-
 
     // loop through the stored song info and display in bootstrap cards
     for (let i = 0; i < 12 && i < playlistTracksArray.length; i++) {
@@ -354,47 +361,50 @@ function showPlaylist() {
       playlistButtonDiv.append(playlistFavBtn);
 
       if (i === playlistTracksArray.length - 1) {
-        let remainingColumns = columns - playlistTracksArray.length % columns;
+        let remainingColumns = columns - (playlistTracksArray.length % columns);
         for (let j = 0; j < remainingColumns; j++) {
-          let emptyColumn = $('<div>');
-          if (!localStorage.getItem('songData')) {
-            emptyColumn
-              .attr(
-                "class",
-                "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
-              );
+          let emptyColumn = $("<div>");
+          if (!localStorage.getItem("songData")) {
+            emptyColumn.attr(
+              "class",
+              "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+            );
           } else {
-            emptyColumn
-              .attr(
-                "class",
-                "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
-              );
-          };
+            emptyColumn.attr(
+              "class",
+              "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+            );
+          }
           playlistRow.append(emptyColumn);
         }
       }
     }
 
-    if (!$('#loadMoreButton2').length) {
-      var loadMoreButton2 = $('<button id="loadMoreButton2">Load More</button>');
-      var loadMoreButtonDiv2 = $('<div class="d-flex justify-content-center align-items-center>"</div>');
+    if (!$("#loadMoreButton2").length) {
+      var loadMoreButton2 = $(
+        '<button id="loadMoreButton2">Load More</button>'
+      );
+      var loadMoreButtonDiv2 = $(
+        '<div class="d-flex justify-content-center align-items-center>"</div>'
+      );
       $(loadMoreButtonDiv2).append(loadMoreButton2);
-      $('#main').append(loadMoreButtonDiv2);
-      $('#loadMoreButton2').attr('class', 'btn btn-primary m-4');
+      $("#main").append(loadMoreButtonDiv2);
+      $("#loadMoreButton2").attr("class", "btn btn-primary m-4");
 
-      $('#loadMoreButton2').on('click', function () {
-        $('html, body').animate({
-          scrollTop: $(window).scrollTop() + $(window).height() * 0.5
-        }, 'slow');
+      $("#loadMoreButton2").on("click", function () {
+        $("html, body").animate(
+          {
+            scrollTop: $(window).scrollTop() + $(window).height() * 0.5,
+          },
+          "slow"
+        );
         if (playlistTracksArray.length - currentIndex < 12) {
-          $('#loadMoreButton2').hide();
-
-        };
+          $("#loadMoreButton2").hide();
+        }
         currentIndex += 12;
         resultsHeading.hide();
         showPlaylist();
-
-      })
+      });
     }
 
     $("#playlistContainer").append(playlistRow);
@@ -416,24 +426,24 @@ function showFavourites() {
       .attr("data-coverImg", song.image);
     card.html(
       '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
-      '<div class="flex-fill d-flex d-sm-block">' +
-      '<img src="' +
-      song.image +
-      '" class="h-100 w-100"' +
-      'alt="...">' +
-      "</div>" +
-      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
-      '<div class="mb-1 pt-3 text-center">' +
-      '<h5 class="card-title">' +
-      song.songTitle +
-      "</h5>" +
-      "</div>" +
-      '<div class="d-flex flex-wrap gap-2 pb-2 text-center">' +
-      '<button class="btn btn-primary flex-fill lyricsButton">View Lyrics</button>' +
-      '<button class="btn btn-primary flex-fill deleteButton">Delete Song</button>' +
-      "</div>" +
-      "</div>" +
-      "</div>"
+        '<div class="flex-fill d-flex d-sm-block">' +
+        '<img src="' +
+        song.image +
+        '" class="h-100 w-100"' +
+        'alt="...">' +
+        "</div>" +
+        '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
+        '<div class="mb-1 pt-3 text-center">' +
+        '<h5 class="card-title">' +
+        song.songTitle +
+        "</h5>" +
+        "</div>" +
+        '<div class="d-flex flex-wrap gap-2 pb-2 text-center">' +
+        '<button class="btn btn-primary flex-fill lyricsButton">View Lyrics</button>' +
+        '<button class="btn btn-primary flex-fill deleteButton">Delete Song</button>' +
+        "</div>" +
+        "</div>" +
+        "</div>"
     );
     $("#favourites").append(card);
     $("#clearFavourites").html(
@@ -499,10 +509,10 @@ function showModal(e) {
   $("#favouritesButton").hide();
   $("#lyricsModalContent").html(
     '<div class="d-flex justify-content-center">' +
-    '<div class="spinner-border"' +
-    'role="status">' +
-    "</div>" +
-    "</div>"
+      '<div class="spinner-border"' +
+      'role="status">' +
+      "</div>" +
+      "</div>"
   );
   $("#retryButton").hide();
 
@@ -536,13 +546,13 @@ function showModal(e) {
 
 $("#search-button").on("click", function (e) {
   e.preventDefault();
-  let artist = $('#search-input').val();
-  localStorage.setItem('search', JSON.stringify(artist));
+  let artist = $("#search-input").val();
+  localStorage.setItem("search", JSON.stringify(artist));
 
   $("#cardContainer").empty();
   playlistHeading.hide();
   showLyricData();
-  $('#loadMoreButton2').hide();
+  $("#loadMoreButton2").hide();
 });
 
 $("#retryButton").on("click", showLyricData);
@@ -585,7 +595,7 @@ $(document).on("click", ".favsButton", function () {
     songTitle: $(this).closest("[data-songName]").attr("data-songName"),
     songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
   };
-  
+
   songs.push(songObject);
   // To stop duplication of the the songData objects, loop through the array and remove them
   //Use the reduce method to go through every item and see if we already have an object added to the accumulator with the same songObject as the current item.
@@ -622,26 +632,25 @@ if (!localStorage.getItem("songData")) {
 $(document).ready(function () {
   $(window).scroll(function () {
     if ($(this).scrollTop() > 20) {
-      $('#backToTop').fadeIn();
+      $("#backToTop").fadeIn();
     } else {
-      $('#backToTop').fadeOut();
+      $("#backToTop").fadeOut();
     }
   });
-  $('#backToTop').click(function () {
-    $('html, body').animate({ scrollTop: 0 }, 'normal');
+  $("#backToTop").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, "normal");
     return false;
   });
 
-  $('#backButton').on('click', function () {
-    $('#cardContainer').empty();
-    $('#resultsHeading').hide();
-    $('#loadMoreButton').hide();
-    $('#loadMoreButton2').show();
-    $('#backButton').hide();
+  $("#backButton").on("click", function () {
+    $("#cardContainer").empty();
+    $("#resultsHeading").hide();
+    $("#loadMoreButton").hide();
+    $("#loadMoreButton2").show();
+    $("#backButton").hide();
     currentIndex = -12;
     showPlaylist();
   });
-
 });
 
 showFavourites();
@@ -649,148 +658,151 @@ showPlaylist();
 playlistList();
 
 function playlistList() {
+  var playlistRow = $(
+    '<div class="playlistRow row w-100 justify-content-between"></div>'
+  );
 
-  var playlistRow = $('<div class="playlistRow row w-100 justify-content-between"></div>');
-
-  var playlistListContainer = $('<div>');
-
-  if (!localStorage.getItem("songData")) {
-    playlistListContainer.attr(
-      "class",
-      "playlistListContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
-    );
-  } else {
-    playlistListContainer.attr(
-      "class",
-      "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
-    );
-  };
-
-  var playlistListHeading = $('#playlistListHeading');
-  playlistListHeading.text('Most popular playlists');
+  var playlistListHeading = $("#playlistListHeading");
+  playlistListHeading.text("Most popular playlists");
   playlistListHeading.show();
 
-  playlistRow.append(playlistListContainer);
-
-  const playlistsArray = ['915487765', '3155776842', '10361171462', '4503899902', '9039631242', '3660896922'];
+  const playlistsArray = [
+    "915487765",
+    "3155776842",
+    "10361171462",
+    "4503899902",
+    "9039631242",
+    "3660896922",
+  ];
 
   var playlistIdArray = [];
 
   for (let i = 0; i < playlistsArray.length; i++) {
+    var settings = {
+      async: true,
+      crossDomain: true,
+      url:
+        "https://deezerdevs-deezer.p.rapidapi.com/playlist/" +
+        playlistsArray[i],
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
+        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+      },
+    };
 
-  var settings = {
-    async: true,
-    crossDomain: true,
-    url: "https://deezerdevs-deezer.p.rapidapi.com/playlist/" + playlistsArray[i],
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
-      "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
-    },
-  };
+    $.ajax(settings).done(function (playlistListResponse) {
+      console.log(playlistListResponse);
 
-  $.ajax(settings).done(function (playlistListResponse) {
-    console.log(playlistListResponse);
-   
+      // $.each(playlistListResponse, function (index, value) {
 
-    // $.each(playlistListResponse, function (index, value) {
-  
       // var test = value.tracks.data.length;
       // console.log(test);
       playlistListObj = {
         playlistTitle: playlistListResponse.title,
         playlistImage: playlistListResponse.picture,
         playlistTracksAmt: playlistListResponse.tracks.data.length,
-        playlistFans: playlistListResponse.fans
+        playlistFans: playlistListResponse.fans,
       };
 
       // playlistIdArray.push(playlistListObj);
       // console.log(playlistIdArray);
 
+      // for (i = 0; i < playlistIdArray.length; i++) {
 
-  // for (i = 0; i < playlistIdArray.length; i++) {
+      console.log(playlistIdArray[i]);
+      var playlistListContainer = $("<div>");
 
-    console.log(playlistIdArray[i]);
+      if (!localStorage.getItem("songData")) {
+        playlistListContainer.attr(
+          "class",
+          "playlistListContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+        );
+      } else {
+        playlistListContainer.attr(
+          "class",
+          "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+        );
+      }
+      playlistRow.append(playlistListContainer);
 
-    var playlistCard = $('<div>');
-    playlistCard.attr("class", "card result mt-4 w-100");
-    playlistListContainer.append(playlistCard);
+      var playlistCard = $("<div>");
+      playlistCard.attr("class", "card result mt-4 w-100");
+      playlistListContainer.append(playlistCard);
 
-    //add image
-    var playlistImg = $('<img>');
-    playlistImg
-    .attr('class', 'card-img-top')
-    .attr('src', playlistListObj.playlistImage);
-    playlistCard.append(playlistImg);
+      //add image
+      var playlistImg = $("<img>");
+      playlistImg
+        .attr("class", "card-img-top")
+        .attr("src", playlistListObj.playlistImage);
+      playlistCard.append(playlistImg);
 
-    // add card body div
-    var playlistCardBody = $("<div>");
-    playlistCardBody.attr("class", "d-flex card-body flex-column");
-    playlistCard.append(playlistCardBody);
+      // add card body div
+      var playlistCardBody = $("<div>");
+      playlistCardBody.attr("class", "d-flex card-body flex-column");
+      playlistCard.append(playlistCardBody);
 
-    //add song title heading
-    var playlistTitle = $("<h2>");
-    playlistTitle.attr("class", "card-title");
-    playlistTitle.attr(
-      "style",
-      "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
-    );
-    playlistTitle.text(playlistListObj.playlistTitle);
-    playlistCardBody.append(playlistTitle);
+      //add song title heading
+      var playlistTitle = $("<h2>");
+      playlistTitle.attr("class", "card-title");
+      playlistTitle.attr(
+        "style",
+        "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
+      );
+      playlistTitle.text(playlistListObj.playlistTitle);
+      playlistCardBody.append(playlistTitle);
 
+      // add line
+      var playlistDivider = $("<hr>");
+      playlistDivider.attr("class", "hr");
+      playlistDivider.attr(
+        "style",
+        "margin: .5rem 0 !important; color: white;"
+      );
+      playlistCardBody.append(playlistDivider);
 
-    // add line
-    var playlistDivider = $("<hr>");
-    playlistDivider.attr("class", "hr");
-    playlistDivider.attr(
-      "style",
-      "margin: .5rem 0 !important; color: white;"
-    );
-    playlistCardBody.append(playlistDivider);
+      // add playlist info
+      var playlistInfo = $("<h3>");
+      playlistInfo.attr(
+        "style",
+        "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
+      );
+      playlistInfo.text(
+        "Tracks: " +
+          playlistListObj.playlistTracksAmt +
+          " | Fans: " +
+          playlistListObj.playlistFans
+      );
+      playlistCardBody.append(playlistInfo);
 
-    // add playlist info
-    var playlistInfo = $("<h3>");
-    playlistInfo.attr(
-      "style",
-      "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
-    );
-    playlistInfo.text("Tracks: " + playlistListObj.playlistTracksAmt + " | Fans: " + playlistListObj.playlistFans);
-    playlistCardBody.append(playlistInfo);
+      // add line
+      var playlistDivider = $("<hr>");
+      playlistDivider.attr("class", "hr");
+      playlistDivider.attr(
+        "style",
+        "margin: .5rem 0 !important; color: white;"
+      );
+      playlistCardBody.append(playlistDivider);
 
-    // add line
-    var playlistDivider = $("<hr>");
-    playlistDivider.attr("class", "hr");
-    playlistDivider.attr(
-      "style",
-      "margin: .5rem 0 !important; color: white;"
-    );
-    playlistCardBody.append(playlistDivider);
+      //add buttons div
+      var playlistButtonDiv = $("<div>");
+      playlistButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
+      playlistCardBody.append(playlistButtonDiv);
 
-    //add buttons div
-    var playlistButtonDiv = $("<div>");
-    playlistButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
-    playlistCardBody.append(playlistButtonDiv);
-
-    //add buttons to div
-    var playPlaylistButton = $("<button>");
-    playPlaylistButton.attr("class", "btn btn-primary flex-fill lyricsButton");
-    // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
-    playPlaylistButton.text("View Playlist");
-    playlistButtonDiv.append(playPlaylistButton);
-
-    
-
+      //add buttons to div
+      var playPlaylistButton = $("<button>");
+      playPlaylistButton.attr(
+        "class",
+        "btn btn-primary flex-fill lyricsButton"
+      );
+      // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
+      playPlaylistButton.text("View Playlist");
+      playlistButtonDiv.append(playPlaylistButton);
     });
-
-    
-
   }
 
-  
-
-$('#playlistContainer').append(playlistRow);
+  $("#playlistContainer").append(playlistRow);
 }
-
 
 //NEW FEATURES
 

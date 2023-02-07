@@ -700,7 +700,7 @@ function playlistList() {
       // console.log(test);
       playlistListObj = {
         playlistTitle: playlistListResponse.title,
-        playlistImage: playlistListResponse.picture,
+        playlistImage: playlistListResponse.picture_xl,
         playlistTracksAmt: playlistListResponse.tracks.data.length,
         playlistFans: playlistListResponse.fans,
       };

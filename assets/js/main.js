@@ -464,6 +464,9 @@ showFavourites();
 // showPlaylist();
 playlistList();
 
+var counter = 0;
+
+
 function playlistList() {
   var playlistListRow = $(
     '<div class="playlistListRow row w-100 justify-content-between"></div>'
@@ -473,7 +476,7 @@ function playlistList() {
   playlistListHeading.text("Most popular playlists");
   playlistListHeading.show();
 
-  const columns = 12;
+  // const columns = 12;
 
   const playlistsArray = [
     "915487765",
@@ -486,9 +489,11 @@ function playlistList() {
     "1297091495"
   ];
 
-  var playlistIdArray = [];
+  // var playlistIdArray = [];
+  // var promises = [];
 
   for (let i = 0; i < playlistsArray.length; i++) {
+
     var settings = {
       async: true,
       crossDomain: true,
@@ -503,6 +508,8 @@ function playlistList() {
     };
 
     $.ajax(settings).done(function (playlistListResponse) {
+      var counter = counter + 1;
+
       console.log(playlistListResponse);
 
       playlistListObj = {
@@ -602,31 +609,31 @@ function playlistList() {
       playPlaylistButton.text("View Playlist");
       playlistButtonDiv.append(playPlaylistButton);
 
-      
+
     });
 
-    if (i === playlistsArray.length - 1) {
-      let remainingColumns = columns - (playlistsArray.length % columns);
-      for (let j = 0; j < remainingColumns; j++) {
-        let emptyColumn = $("<div>");
+    
+  
+  $("#playlistContainer").append(playlistListRow);
+}
+}
+
+console.log(counter);
+while (counter >= 7) {
+  let emptyColumn = $("<div>");
         if (!localStorage.getItem("songData")) {
           emptyColumn.attr(
             "class",
-            "playlistListContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+            "d-none"
           );
         } else {
           emptyColumn.attr(
             "class",
-            "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+            "emptyColumn col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
           );
         }
         playlistListRow.append(emptyColumn);
-      }
-    }
   }
-  
-  $("#playlistContainer").append(playlistListRow);
-}
 
 function showPlay() {
   $("#playlistListHeading").hide();

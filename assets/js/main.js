@@ -445,11 +445,12 @@ $(document).ready(function () {
   $("#backButton").on("click", function () {
     $("#cardContainer").empty();
     $("#resultsHeading").hide();
+    $("#playlistListHeading").hide();
     $("#loadMoreButton").hide();
     $("#loadMoreButton2").show();
     $("#backButton").hide();
     currentIndex = -12;
-    showPlaylist();
+    showPlay();
   });
 });
 
@@ -458,8 +459,8 @@ showFavourites();
 playlistList();
 
 function playlistList() {
-  var playlistRow = $(
-    '<div class="playlistRow row w-100 justify-content-between"></div>'
+  var playlistListRow = $(
+    '<div class="playlistListRow row w-100 justify-content-between"></div>'
   );
 
   var playlistListHeading = $("#playlistListHeading");
@@ -473,6 +474,8 @@ function playlistList() {
     "4503899902",
     "9039631242",
     "3660896922",
+    "7456464544",
+    "1297091495"
   ];
 
   var playlistIdArray = [];
@@ -486,7 +489,7 @@ function playlistList() {
         playlistsArray[i],
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
+        "X-RapidAPI-Key": "8ba2827decmsh644a5632e63b077p15cef7jsn3b463080b576",
         "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
       },
     };
@@ -514,7 +517,7 @@ function playlistList() {
           "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
         );
       }
-      playlistRow.append(playlistListContainer);
+      playlistListRow.append(playlistListContainer);
 
       var playlistCard = $("<div>");
       playlistCard
@@ -593,15 +596,17 @@ function playlistList() {
     });
   }
 
-  $("#playlistContainer").append(playlistRow);
+  $("#playlistContainer").append(playlistListRow);
 }
 
 function showPlay() {
+  $("#playlistListHeading").hide();
+  $("#playlistContainer").empty();
+  $("#backButton").show();
 
-  $("#playlistListHeading").hide()
-  $("#playlistContainer").empty()
+  var playID = JSON.parse(localStorage.getItem("playlist")) || $(this).closest("[data-playlistID]").attr("data-playlistID");
 
-  var playID = $(this).closest("[data-playlistID]").attr("data-playlistID");
+  localStorage.setItem("playlist", JSON.stringify(playID));
 
   currentIndex += 12;
 
@@ -616,7 +621,7 @@ function showPlay() {
       "&limit=12",
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
+      "X-RapidAPI-Key": "8ba2827decmsh644a5632e63b077p15cef7jsn3b463080b576",
       "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
     },
   };
@@ -793,16 +798,20 @@ function showPlay() {
         }
         currentIndex += 12;
         resultsHeading.hide();
+        playID = localStorage.getItem("playlist");
         showPlay();
+        
       });
+      
     }
-
-    $("#playlistContainer").append(playlistRow);
+    
+    $("#cardContainer").append(playlistRow);
   });
 }
 
 $(document).on("click", ".playlistBtn", showPlay);
 
+localStorage.removeItem("playlist")
 //NEW FEATURES
 
 //get playlists in array

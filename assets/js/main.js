@@ -266,7 +266,11 @@ function clearFavourites() {
   if (!localStorage.getItem("songData")) {
     $("aside").hide();
     $("#resultsDiv").removeClass("col-lg-8 col-md-9");
+    $("#playlistContainer").removeClass("col-lg-8 col-md-9");
     $(".resultContainer")
+      .removeClass("col-xl-4 col-lg-4 col-md-6")
+      .addClass("col-md-6 col-lg-3 ");
+      $(".playlistListContainer")
       .removeClass("col-xl-4 col-lg-4 col-md-6")
       .addClass("col-md-6 col-lg-3 ");
   } else {
@@ -350,6 +354,7 @@ $("#search-button").on("click", function (e) {
   localStorage.setItem("search", JSON.stringify(artist));
 
   $("#cardContainer").empty();
+  $("#playlistListHeading").hide();
   playlistHeading.hide();
   showLyricData();
   $("#loadMoreButton2").hide();
@@ -446,11 +451,12 @@ $(document).ready(function () {
     $("#cardContainer").empty();
     $("#resultsHeading").hide();
     $("#playlistListHeading").hide();
+    $('#playlistHeading').hide();
     $("#loadMoreButton").hide();
     $("#loadMoreButton2").show();
     $("#backButton").hide();
     currentIndex = -12;
-    showPlay();
+    playlistList();
   });
 });
 
@@ -466,6 +472,8 @@ function playlistList() {
   var playlistListHeading = $("#playlistListHeading");
   playlistListHeading.text("Most popular playlists");
   playlistListHeading.show();
+
+  const columns = 12;
 
   const playlistsArray = [
     "915487765",
@@ -593,9 +601,30 @@ function playlistList() {
       // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       playPlaylistButton.text("View Playlist");
       playlistButtonDiv.append(playPlaylistButton);
-    });
-  }
 
+      
+    });
+
+    if (i === playlistsArray.length - 1) {
+      let remainingColumns = columns - (playlistsArray.length % columns);
+      for (let j = 0; j < remainingColumns; j++) {
+        let emptyColumn = $("<div>");
+        if (!localStorage.getItem("songData")) {
+          emptyColumn.attr(
+            "class",
+            "playlistListContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+          );
+        } else {
+          emptyColumn.attr(
+            "class",
+            "playlistListContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+          );
+        }
+        playlistListRow.append(emptyColumn);
+      }
+    }
+  }
+  
   $("#playlistContainer").append(playlistListRow);
 }
 

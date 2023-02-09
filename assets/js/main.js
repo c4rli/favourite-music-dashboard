@@ -12,6 +12,7 @@ currentIndex = -12;
 
 function showLyricData(e) {
   $("#loadMoreButton").show();
+
   var loadingSpinner = $("<div>").html(
     '<div id="spinnerContainer" class="d-flex justify-content-center align-items-center flex-column">' +
     '<div id="pageLoadSpinner" class="spinner-border mb-3" role="status">' +
@@ -26,6 +27,7 @@ function showLyricData(e) {
     JSON.parse(localStorage.getItem("search")) || $("#search-input").val();
     localStorage.setItem("search", JSON.stringify(artist));
     
+
     // Ajax request for artist (Deezer API)
     let settings = {
     async: true,
@@ -206,7 +208,7 @@ function showLyricData(e) {
         );
         $(loadMoreButtonDiv).append(loadMoreButton);
         $("#main").append(loadMoreButtonDiv);
-        $("#loadMoreButton").attr("class", "btn btn-primary m-4");
+        $("#loadMoreButton").attr("class", "btn btn-primary button m-4");
 
         $("#loadMoreButton").on("click", function () {
           $("html, body").animate(
@@ -697,8 +699,9 @@ $(document).ready(function () {
     $("#playlistListHeading").hide();
     $('#playlistHeading').hide();
     $("#loadMoreButton").hide();
-    $("#loadMoreButton2").show();
+    $("#loadMoreButton2").hide();
     $("#backButton").hide();
+    localStorage.removeItem("playlist")
     currentIndex = -12;
     playlistList();
   });
@@ -848,7 +851,7 @@ function playlistList() {
 
       //add buttons to div
       var playPlaylistButton = $("<button>");
-      playPlaylistButton.attr("class", "btn btn-primary flex-fill");
+      playPlaylistButton.attr("class", "btn btn-primary button flex-fill");
       // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       playPlaylistButton.text("View Playlist");
       playlistButtonDiv.append(playPlaylistButton);
@@ -1025,13 +1028,13 @@ function showPlay() {
 
       //add buttons to div
       var playlistLyricsBtn = $("<button>");
-      playlistLyricsBtn.attr("class", "btn btn-primary flex-fill lyricsButton");
+      playlistLyricsBtn.attr("class", "btn btn-primar button flex-fill lyricsButton");
       // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       playlistLyricsBtn.text("View Lyrics");
       playlistButtonDiv.append(playlistLyricsBtn);
 
       var playlistFavBtn = $("<button>");
-      playlistFavBtn.attr("class", "btn btn-primary flex-fill favsButton");
+      playlistFavBtn.attr("class", "btn btn-primary button  flex-fill favsButton");
       playlistFavBtn.text("Add to Favs");
       playlistButtonDiv.append(playlistFavBtn);
 
@@ -1064,7 +1067,7 @@ function showPlay() {
       );
       $(loadMoreButtonDiv2).append(loadMoreButton2);
       $("#main").append(loadMoreButtonDiv2);
-      $("#loadMoreButton2").attr("class", "btn btn-primary m-4");
+      $("#loadMoreButton2").attr("class", "btn btn-primary button m-4");
 
       $("#loadMoreButton2").on("click", function () {
         $("html, body").animate(

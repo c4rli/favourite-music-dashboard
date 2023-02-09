@@ -1028,7 +1028,7 @@ function showPlay() {
 
       //add buttons to div
       var playlistLyricsBtn = $("<button>");
-      playlistLyricsBtn.attr("class", "btn btn-primar button flex-fill lyricsButton");
+      playlistLyricsBtn.attr("class", "btn btn-primary button flex-fill lyricsButton");
       // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       playlistLyricsBtn.text("View Lyrics");
       playlistButtonDiv.append(playlistLyricsBtn);

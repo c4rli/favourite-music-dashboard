@@ -886,6 +886,7 @@ function showPlay() {
   $("#playlistListHeading").hide();
   $("#playlistContainer").empty();
   $("#backButton").show();
+  $('#loadMoreButton2').show();
 
   var playID = JSON.parse(localStorage.getItem("playlist")) || $(this).closest("[data-playlistID]").attr("data-playlistID");
 
